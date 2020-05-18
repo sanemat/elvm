@@ -109,12 +109,10 @@ ELC_SRCS := \
 	el.c \
 	forth.c \
 	fs.c \
-	go.c \
 	hell.c \
 	hs.c \
 	i.c \
 	java.c \
-	js.c \
 	lua.c \
 	ll.c \
 	mcfunction.c \
@@ -125,7 +123,6 @@ ELC_SRCS := \
 	pl.c \
 	py.c \
 	ps.c \
-	rb.c \
 	rs.c \
 	sed.c \
 	sh.c \
@@ -173,11 +170,11 @@ OUT.eir := $(DSTS)
 $(DSTS): out/%.eir: test/%.eir
 	cp $< $@.tmp && mv $@.tmp $@
 
-SRCS := $(wildcard test/*.eir.rb)
-DSTS := $(SRCS:test/%.eir.rb=out/%.eir)
-OUT.eir += $(DSTS)
-$(DSTS): out/%.eir: test/%.eir.rb
-	ruby $< > $@.tmp && mv $@.tmp $@
+#SRCS := $(wildcard test/*.eir.rb)
+#DSTS := $(SRCS:test/%.eir.rb=out/%.eir)
+#OUT.eir += $(DSTS)
+#$(DSTS): out/%.eir: test/%.eir.rb
+#	ruby $< > $@.tmp && mv $@.tmp $@
 
 SRCS := $(wildcard test/*.c)
 DSTS := $(SRCS:test/%.c=out/%.c)
@@ -256,9 +253,9 @@ build: $(TEST_RESULTS)
 
 # Targets
 
-TARGET := rb
-RUNNER := ruby
-include target.mk
+#TARGET := rb
+#RUNNER := ruby
+#include target.mk
 
 TARGET := py
 RUNNER := python
@@ -270,9 +267,9 @@ RUNNER := python
 include target.mk
 endif
 
-TARGET := js
-RUNNER := nodejs
-include target.mk
+#TARGET := js
+#RUNNER := nodejs
+#include target.mk
 
 TARGET := asmjs
 RUNNER := nodejs
@@ -449,9 +446,9 @@ TARGET := pl
 RUNNER := perl
 include target.mk
 
-TARGET := go
-RUNNER := go run
-include target.mk
+#TARGET := go
+#RUNNER := go run
+#include target.mk
 
 ifdef HELL
 TARGET := hell
