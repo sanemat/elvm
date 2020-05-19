@@ -1,7 +1,7 @@
 #include <ir/ir.h>
 #include <target/util.h>
 
-static void init_state_rb(Data* data) {
+static void rb_init_state(Data* data) {
   for (int i = 0; i < 7; i++) {
     emit_line("%s = 0", reg_names[i]);
   }
@@ -13,6 +13,33 @@ static void init_state_rb(Data* data) {
   }
 }
 
+static void rb_emit_func_prologue(int func_id) {
+    emit_line("# prologue, func_id: %d", func_id);
+}
+
+static void rb_emit_func_epilogue(void) {
+    emit_line("# epilogue");
+}
+
+static void rb_emit_pc_change(int pc) {
+    emit_line("# pc: %d", pc);
+}
+
+static void rb_emit_inst(Inst* inst) {
+    switch (inst->op) {
+    default:
+        emit_line("# op");
+    }
+}
+
 void target_rb(Module* module) {
-  init_state_rb(module->data);
+  rb_init_state(module->data);
+
+  int num_funcs = emit_chunked_main_loop(module->text,
+                                           rb_emit_func_prologue,
+                                           rb_emit_func_epilogue,
+                                           rb_emit_pc_change,
+                                           rb_emit_inst);
+  emit_line("# num_funcs: %d", num_funcs);
+
 }
