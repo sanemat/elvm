@@ -166,7 +166,7 @@ void target_rb(Module* module) {
     emit_line("f%d()", i);
     dec_indent();
   }
-  emit_line("end");
+  emit_line("end # case @pc");
   dec_indent();
-  emit_line("end");
+  emit_line("end # loop");
 }
