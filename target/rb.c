@@ -1,9 +1,15 @@
 #include <ir/ir.h>
 #include <target/util.h>
 
+static const char* RB_REG_NAMES[] = {
+  "@a", "@b", "@c", "@d", "@bp", "@sp", "@pc"
+};
+
 static void rb_init_state(Data* data) {
+  reg_names = RB_REG_NAMES;
+
   for (int i = 0; i < 7; i++) {
-    emit_line("@%s = 0", reg_names[i]);
+    emit_line("%s = 0", reg_names[i]);
   }
   emit_line("@mem = [0] * (1 << 24)");
   for (int mp = 0; data; data = data->next, mp++) {
