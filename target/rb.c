@@ -24,9 +24,11 @@ static void rb_emit_func_prologue(int func_id) {
               func_id * CHUNKED_FUNC_SIZE,
               (func_id + 1) * CHUNKED_FUNC_SIZE);
     inc_indent();
+    emit_line("case @pc");
 }
 
 static void rb_emit_func_epilogue(void) {
+    emit_line("end # case @pc");
     dec_indent();
     emit_line("end # while");
     dec_indent();
@@ -34,10 +36,12 @@ static void rb_emit_func_epilogue(void) {
 }
 
 static void rb_emit_pc_change(int pc) {
-    emit_line("# pc: %d", pc);
+    emit_line("when %d", pc);
 }
 
 static void rb_emit_inst(Inst* inst) {
+  inc_indent();
+
   switch (inst->op) {
   case MOV:
     emit_line("\"MOV\"");
@@ -130,6 +134,8 @@ static void rb_emit_inst(Inst* inst) {
   default:
     error("oops");
   }
+
+  dec_indent();
 }
 
 void target_rb(Module* module) {
@@ -140,7 +146,7 @@ void target_rb(Module* module) {
                                            rb_emit_func_epilogue,
                                            rb_emit_pc_change,
                                            rb_emit_inst);
-  emit_line("# num_funcs: %d", num_funcs);
+
   emit_line("");
   emit_line("loop do");
   inc_indent();
