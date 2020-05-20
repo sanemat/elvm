@@ -73,7 +73,7 @@ static void rb_emit_inst(Inst* inst) {
     break;
 
   case EXIT:
-    emit_line("\"EXIT\"");
+    emit_line("exit(0)");
     break;
 
   case DUMP:
