@@ -29,6 +29,7 @@ static void rb_emit_func_prologue(int func_id) {
 
 static void rb_emit_func_epilogue(void) {
     emit_line("end # case @pc");
+    emit_line("@pc += 1");
     dec_indent();
     emit_line("end # while");
     dec_indent();
@@ -128,7 +129,7 @@ static void rb_emit_inst(Inst* inst) {
     break;
 
   case JMP:
-    emit_line("\"JMP: jmp:%s\"", value_str(&inst->jmp));
+    emit_line("@pc = %s - 1", value_str(&inst->jmp));
     break;
 
   default:
