@@ -47,11 +47,13 @@ static void rb_emit_pc_change(int pc) {
 }
 
 static void rb_emit_inst(Inst* inst) {
+  reg_names = RB_REG_NAMES;
+
   inc_indent();
 
   switch (inst->op) {
   case MOV:
-    emit_line("\"MOV\"");
+    emit_line("%s = %s", reg_names[inst->dst.reg], src_str(inst));
     break;
 
   case ADD:
