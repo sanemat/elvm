@@ -20,9 +20,15 @@ static void rb_emit_func_prologue(int func_id) {
     emit_line("");
     emit_line("def f%d", func_id);
     inc_indent();
+    emit_line("while %d <= @pc and @pc < %d",
+              func_id * CHUNKED_FUNC_SIZE,
+              (func_id + 1) * CHUNKED_FUNC_SIZE);
+    inc_indent();
 }
 
 static void rb_emit_func_epilogue(void) {
+    dec_indent();
+    emit_line("end # while");
     dec_indent();
     emit_line("end # def f d");
 }
