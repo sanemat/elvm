@@ -81,7 +81,7 @@ static void rb_emit_inst(Inst* inst) {
     break;
 
   case GETC:
-    emit_line("%s = gets(1) || 0", reg_names[inst->dst.reg]);
+    emit_line("%s = gets(1)&.ord || 0", reg_names[inst->dst.reg]);
     break;
 
   case EXIT:
