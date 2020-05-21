@@ -57,7 +57,9 @@ static void rb_emit_inst(Inst* inst) {
     break;
 
   case ADD:
-    emit_line("\"ADD\"");
+    emit_line("%s = (%s + %s) & " UINT_MAX_STR,
+              reg_names[inst->dst.reg],
+              reg_names[inst->dst.reg], src_str(inst));
     break;
 
   case SUB:
