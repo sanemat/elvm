@@ -109,6 +109,7 @@ ELC_SRCS := \
 	el.c \
 	forth.c \
 	fs.c \
+	go.c \
 	hell.c \
 	hs.c \
 	i.c \
@@ -447,9 +448,9 @@ TARGET := pl
 RUNNER := perl
 include target.mk
 
-#TARGET := go
-#RUNNER := go run
-#include target.mk
+TARGET := go
+RUNNER := go run
+include target.mk
 
 ifdef HELL
 TARGET := hell
