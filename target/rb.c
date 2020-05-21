@@ -89,7 +89,6 @@ static void rb_emit_inst(Inst* inst) {
     break;
 
   case DUMP:
-    emit_line("\"DUMP\"");
     break;
 
   case EQ:
