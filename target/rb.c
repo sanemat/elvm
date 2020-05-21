@@ -93,27 +93,13 @@ static void rb_emit_inst(Inst* inst) {
     break;
 
   case EQ:
-    emit_line("\"EQ\"");
-    break;
-
   case NE:
-    emit_line("\"NE\"");
-    break;
-
   case LT:
-    emit_line("\"LT\"");
-    break;
-
   case GT:
-    emit_line("\"GT\"");
-    break;
-
   case LE:
-    emit_line("\"LE\"");
-    break;
-
   case GE:
-    emit_line("\"GE\"");
+    emit_line("%s = (%s) ? 1 : 0",
+              reg_names[inst->dst.reg], cmp_str(inst, "true"));
     break;
 
   case JEQ:
