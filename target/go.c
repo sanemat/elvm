@@ -51,7 +51,9 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case ADD:
-    emit_line("`ADD`");
+    emit_line("%s = (%s + %s) & " UINT_MAX_STR,
+              reg_names[inst->dst.reg],
+              reg_names[inst->dst.reg], src_str(inst));
     break;
 
   case SUB:
@@ -59,11 +61,11 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case LOAD:
-    emit_line("`LOAD`");
+    emit_line("%s = mem[%s]", reg_names[inst->dst.reg], src_str(inst));
     break;
 
   case STORE:
-    emit_line("`STORE`");
+    emit_line("mem[%s] = %s", src_str(inst), reg_names[inst->dst.reg]);
     break;
 
   case PUTC:
