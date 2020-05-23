@@ -71,7 +71,21 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case GETC:
-    emit_line("`GETC`");
+    emit_line("{ // GETC start");
+    inc_indent();
+    emit_line("buf := make([]byte, 1)");
+    emit_line("n, err := os.Stdin.Read(buf[:])");
+    emit_line("if n != 0 && err == nil {");
+    inc_indent();
+    emit_line("%s = int(buf[0])", reg_names[inst->dst.reg]);
+    dec_indent();
+    emit_line("} else {");
+    inc_indent();
+    emit_line("%s = 0", reg_names[inst->dst.reg]);
+    dec_indent();
+    emit_line("}");
+    dec_indent();
+    emit_line("} // GETC end");
     break;
 
   case EXIT:
