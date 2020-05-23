@@ -6,6 +6,7 @@ static void go_init_state() {
       emit_line("var %s = 0", reg_names[i]);
     }
     emit_line("var mem = make([]int, 1 << 24)");
+    emit_line("var buf [1]byte");
 }
 
 static void go_init_state2(Data* data) {
@@ -13,6 +14,7 @@ static void go_init_state2(Data* data) {
     if (data->v) {
       emit_line("mem[%d] = %d", mp, data->v);
     }
+    emit_line("_ = buf");
   }
 }
 
@@ -71,25 +73,12 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case PUTC:
-    emit_line("os.Stdout.WriteString(string(%s))", src_str(inst));
+    emit_line("buf[0] = byte(%s); os.Stdout.Write(buf[:])", src_str(inst));
     break;
 
   case GETC:
-    emit_line("{ // GETC start");
-    inc_indent();
-    emit_line("buf := make([]byte, 1)");
-    emit_line("n, err := os.Stdin.Read(buf[:])");
-    emit_line("if n != 0 && err == nil {");
-    inc_indent();
-    emit_line("%s = int(buf[0])", reg_names[inst->dst.reg]);
-    dec_indent();
-    emit_line("} else {");
-    inc_indent();
-    emit_line("%s = 0", reg_names[inst->dst.reg]);
-    dec_indent();
-    emit_line("}");
-    dec_indent();
-    emit_line("} // GETC end");
+    emit_line("if n, err := os.Stdin.Read(buf[:]); n != 0 && err == nil { %s = int(buf[0]) } else { %s = 0 }",
+                    reg_names[inst->dst.reg], reg_names[inst->dst.reg]);
     break;
 
   case EXIT:
@@ -165,7 +154,7 @@ void target_go(Module* module) {
   emit_line("switch {");
 
   for (int i = 0; i < num_funcs; i++) {
-    emit_line("case %d <= pc && pc < %d:", i * CHUNKED_FUNC_SIZE, (i + 1) * CHUNKED_FUNC_SIZE);
+    emit_line("case %d <= pc && pc <= %d:", i * CHUNKED_FUNC_SIZE, (i + 1) * CHUNKED_FUNC_SIZE - 1);
     inc_indent();
     emit_line("f%d()", i);
     dec_indent();
