@@ -100,27 +100,20 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case EQ:
-    emit_line("`EQ`");
-    break;
-
   case NE:
-    emit_line("`NE`");
-    break;
-
   case LT:
-    emit_line("`LT`");
-    break;
-
   case GT:
-    emit_line("`GT`");
-    break;
-
   case LE:
-    emit_line("`LE`");
-    break;
-
   case GE:
-    emit_line("`GE`");
+    emit_line("if %s {", cmp_str(inst, "true"));
+    inc_indent();
+    emit_line("%s = 1", reg_names[inst->dst.reg]);
+    dec_indent();
+    emit_line("} else {");
+    inc_indent();
+    emit_line("%s = 0", reg_names[inst->dst.reg]);
+    dec_indent();
+    emit_line("} // if compare");
     break;
 
   case JEQ:
