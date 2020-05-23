@@ -122,31 +122,17 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case JEQ:
-    emit_line("`JEQ`");
-    break;
-
   case JNE:
-    emit_line("`JNE`");
-    break;
-
   case JLT:
-    emit_line("`JLT`");
-    break;
-
   case JGT:
-    emit_line("`JGT`");
-    break;
-
   case JLE:
-    emit_line("`JLE`");
-    break;
-
   case JGE:
-    emit_line("`JGE`");
-    break;
-
   case JMP:
+    emit_line("if %s {", cmp_str(inst, "true"));
+    inc_indent();
     emit_line("pc = %s - 1", value_str(&inst->jmp));
+    dec_indent();
+    emit_line("} // if compare");
     break;
 
   default:
