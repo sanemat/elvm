@@ -47,7 +47,7 @@ static void go_emit_inst(Inst* inst) {
 
   switch (inst->op) {
   case MOV:
-    emit_line("`MOV`");
+    emit_line("%s = %s", reg_names[inst->dst.reg], src_str(inst));
     break;
 
   case ADD:
