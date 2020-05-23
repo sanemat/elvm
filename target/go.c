@@ -67,7 +67,7 @@ static void go_emit_inst(Inst* inst) {
     break;
 
   case PUTC:
-    emit_line("`PUTC`");
+    emit_line("os.Stdout.WriteString(string(%s))", src_str(inst));
     break;
 
   case GETC:
